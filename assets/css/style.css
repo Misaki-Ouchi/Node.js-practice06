@@ -1,0 +1,15 @@
+@charset "utf-8";
+
+#calender {
+  padding: 1rem;
+}
+table {
+  width: 100%;
+}
+td {
+  background-color: #dd3;
+  width: calc(100% / 7);
+}
+.days td {
+  background-color: #dda;
+}

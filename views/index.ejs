@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>カレンダースケジュール</title>
+        <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body>
+        <h1>カレンダースケジュール</h1>
+        <div id="calender">
+            <h2 id="calenderTitle"></h2>
+            <table>
+                <tbody id="calenderBody">
+                    <tr>
+                        <td>日</td>
+                        <td>月</td>
+                        <td>火</td>
+                        <td>水</td>
+                        <td>木</td>
+                        <td>金</td>
+                        <td>土</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <form class="inputForm" action="/" method="post" novalidate>
+            <input type="text" name="title">
+            <input type="text" name="username">
+            <input type="text" name="content">
+            <p><input type="submit" value="送信"></p>
+        </form>
+        <script>
+            // データ取得
+            const schedule = JSON.parse('<%= JSON.stringify(schedule) %>'.replace(/&#34;/g, '"'))
+            // DOM取得
+            const calenderTitle = document.querySelector('#calenderTitle')
+            const calenderBody = document.querySelector('#calenderBody')
+
+            // 必要データ（デフォルトの値）
+            // 年月日
+            let year = 2023
+            let month = 7
+            let date = 31
+            // 曜日（0:日 1:月 2:火 3:水 4:木 5:金 6:土)
+            let weekDay = 1
+            // 今月の初日の曜日(=前の空白の数)
+            let fstWeekDay = 6
+            // 今月の最終日の曜日(後の空白の数 = 7 - lstWeekDay + 1)
+            let lstWeekDay = 6
+            // 今月が何日か
+            let days = 31
+            // カレンダーの行数
+            let rows = 6
+            // カレンダーの枠
+            // （7 * 2 * rowsの多次元配列 偶数個目にdate情報）
+            let cell = []
+
+            // 今日の日付
+            let today = new Date()
+
+            getCalender(today)
+
+            // 次の月
+            function nextMonth(day) {
+                day.setMonth(day.getMonth() + 1)
+                getCalender(day)
+            }
+            nextMonth(today)
+            createCalender()
+            console.log(aftCell)
+
+            // 日付（引数）から必要データ取得
+            function getCalender(val) {
+                year = val.getFullYear()
+                month = val.getMonth() + 1
+                date = val.getDate()
+                weekDay = val.getDay()
+                days = new Date(year, month - 1, 0).getDate() // 今月の最終日の日にちを取得
+                fstWeekDay = new Date(year, month - 1, 1).getDay()
+                lstWeekDay = new Date(year, month, 0).getDay()
+                aftCell = 7 - lstWeekDay + 1
+                rows = Math.ceil((fstWeekDay + days + 1) / 7)
+            }
+
+            // カレンダー生成＆上部に年月表示
+            function createCalender() {
+                createCell()
+                for (let i = 0; i < rows; i++) {
+                    calenderBody.insertAdjacentHTML('beforeend', `
+                    <tr class="days">
+                        <td><a href="/edit/${cell[i][0]}">${cell[i][1]}</a></td>
+                        <td><a href="/edit/${cell[i][2]}">${cell[i][3]}</a></td>
+                        <td><a href="/edit/${cell[i][4]}">${cell[i][5]}</a></td>
+                        <td><a href="/edit/${cell[i][6]}">${cell[i][7]}</a></td>
+                        <td><a href="/edit/${cell[i][8]}">${cell[i][9]}</a></td>
+                        <td><a href="/edit/${cell[i][10]}">${cell[i][11]}</a></td>
+                        <td><a href="/edit/${cell[i][12]}">${cell[i][13]}</a></td>
+                    <tr>
+                    `)
+                }
+                // 上部に年月表示
+                calenderTitle.insertAdjacentHTML('beforeend', `
+                    <tr>${year}年${month}月</tr>
+                `)
+            }
+
+            // カレンダーの枠の中身生成
+            function createCell() {
+                let a = []
+                // tdの中身を配列可
+                for (let i = 1; i <= fstWeekDay; i++) {
+                    // 月初めの空白
+                    a.push('', '')
+                }
+                for (let i = 1; i <= days; i++) {
+                    // 日付
+                    let b = new Date(year, month - 1, i)
+                    a.push(b, b.getDate())
+                }
+                for (let i = 1; i <= aftCell; i++) {
+                    // 月終わりの空白
+                    a.push('', '')
+                }
+                // 配列を７つに分割
+                for (let i = 0; i < rows; i++) {
+                    cell[i] = a.slice(i * 14, (i + 1) * 14)
+                }
+            }
+
+        </script>
+    </body>
+</html>
+<!-- 日数分td作成＆1～31入れる -->
+<!-- 前後に空の枠作る -->
+<!-- rowsより多い分のtd*7削除 -->
+<!-- ７個ずつtrでくくる -->
+<!-- windowのloadで今月、ボタンクリックで翌月・翌々月 -->
+<!-- sql dateがプライマリキー -->
+<!-- <td><a href=/create/"${value.date}"></a></td> -->
