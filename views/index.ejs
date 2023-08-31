@@ -10,6 +10,8 @@
         <h1>カレンダースケジュール</h1>
         <div id="calender">
             <h2 id="calenderTitle"></h2>
+            <button id="prevBtn">&lt;</button>
+            <button id="nextBtn">&gt;</button>
             <table>
                 <tbody id="calenderBody">
                     <tr>
@@ -25,9 +27,9 @@
             </table>
         </div>
         <form class="inputForm" action="/" method="post" novalidate>
-            <input type="text" name="title">
-            <input type="text" name="username">
-            <input type="text" name="content">
+            タイトル：<input type="text" name="title"><br>
+            記入者：<input type="text" name="username"><br>
+            内容：<input type="text" name="content">
             <p><input type="submit" value="送信"></p>
         </form>
         <script>
@@ -36,6 +38,8 @@
             // DOM取得
             const calenderTitle = document.querySelector('#calenderTitle')
             const calenderBody = document.querySelector('#calenderBody')
+            const prevBtn = document.querySelector('#prevBtn')
+            const nextBtn = document.querySelector('#nextBtn')
 
             // 必要データ（デフォルトの値）
             // 年月日
@@ -60,6 +64,8 @@
             let today = new Date()
 
             getCalender(today)
+            // ボタンクリックで月変更
+            nextBtn.addEventListener('click', nextMonth)
 
             // 次の月
             function nextMonth(day) {
