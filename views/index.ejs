@@ -13,16 +13,16 @@
             <button id="prevBtn">&lt;</button>
             <button id="nextBtn">&gt;</button>
             <table>
+                <tr>
+                    <td>日</td>
+                    <td>月</td>
+                    <td>火</td>
+                    <td>水</td>
+                    <td>木</td>
+                    <td>金</td>
+                    <td>土</td>
+                </tr>
                 <tbody id="calenderBody">
-                    <tr>
-                        <td>日</td>
-                        <td>月</td>
-                        <td>火</td>
-                        <td>水</td>
-                        <td>木</td>
-                        <td>金</td>
-                        <td>土</td>
-                    </tr>
                 </tbody>
             </table>
         </div>
@@ -63,21 +63,34 @@
             // 今日の日付
             let today = new Date()
 
-            getCalender(today)
+            
+            window.addEventListener('load', () => {
+                getDayData(today)
+                createCalender()
+            })
             // ボタンクリックで月変更
-            nextBtn.addEventListener('click', nextMonth)
+            prevBtn.addEventListener('click', () => {
+                prevMonth(today)
+                createCalender()
+            })
+            nextBtn.addEventListener('click', () => {
+                nextMonth(today)
+                createCalender()
+            })
 
+            // 前の月
+            function prevMonth(day) {
+                day.setMonth(day.getMonth() - 1)
+                getDayData(day)
+            }
             // 次の月
             function nextMonth(day) {
-                day.setMonth(day.getMonth() + 1)
-                getCalender(day)
+                day.setMonth(day.getMonth())
+                getDayData(day)
             }
-            nextMonth(today)
-            createCalender()
-            console.log(aftCell)
 
             // 日付（引数）から必要データ取得
-            function getCalender(val) {
+            function getDayData(val) {
                 year = val.getFullYear()
                 month = val.getMonth() + 1
                 date = val.getDate()
@@ -92,6 +105,8 @@
             // カレンダー生成＆上部に年月表示
             function createCalender() {
                 createCell()
+                calenderBody.innerHTML = ''
+                calenderTitle.innerHTML = ''
                 for (let i = 0; i < rows; i++) {
                     calenderBody.insertAdjacentHTML('beforeend', `
                     <tr class="days">
@@ -137,10 +152,3 @@
         </script>
     </body>
 </html>
-<!-- 日数分td作成＆1～31入れる -->
-<!-- 前後に空の枠作る -->
-<!-- rowsより多い分のtd*7削除 -->
-<!-- ７個ずつtrでくくる -->
-<!-- windowのloadで今月、ボタンクリックで翌月・翌々月 -->
-<!-- sql dateがプライマリキー -->
-<!-- <td><a href=/create/"${value.date}"></a></td> -->
