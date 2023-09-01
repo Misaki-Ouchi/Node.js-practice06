@@ -42,8 +42,7 @@ app.get("/create/:date", (req, res) => {
 
 app.post("/", (req, res) => {
   console.log(req.params.id);
-  const sql = `INSERT INTO schedule (date, title, username, content, id) VALUES (?, ?, ?, ?, ?)
-    ON DUPLICATE KEY UPDATE title = VALUES(title), username = VALUES(username), content = VALUES(content)? `
+  const sql = "INSERT INTO schedule (date, title, username, content, id) VALUES (?, ?, ?, ?, ?)"
   con.query(
     sql,
     [

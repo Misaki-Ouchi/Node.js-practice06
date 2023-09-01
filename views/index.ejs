@@ -82,7 +82,8 @@
 
                 if (e.target.classList.contains('calender-day') && e.target.innerHTML !== '') {
                     window.open(
-                        `/create/${e.target.dataset.date}`,
+                        // `/create/${e.target.dataset.date}`,
+                        `/create/${year}m0${month}d0${date}w${weekDay}`,
                         '',
                         `width=${w}, height=${h}, top=${wTop}, left=${wLeft}`
                     );
