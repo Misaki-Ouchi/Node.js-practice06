@@ -35,4 +35,29 @@ app.get("/", (req, res) => {
   });
 });
 
+// スケジュール編集
+app.get("/edit/:date", (req, res) => {
+  const sql = "SELECT * FROM schedule WHERE date = ?";
+  con.query(sql, [req.params.id], function (err, result, fields) {
+    if (err) throw err;
+    res.render("edit", {
+      schedule: result,
+    });
+  });
+});
+
+app.post("/", (req, res) => {
+  const sql = "INSERT INTO schedule(date, title, username, content) VALUES (?, ?, ?, ?)";
+  con.query(
+    sql,
+    [req.body.date],
+    function (err, result, fields) {
+      if (err) throw err;
+      res.redirect("/shopBask");
+    }
+  );
+});
+
+
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

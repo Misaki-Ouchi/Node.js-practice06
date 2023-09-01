@@ -71,6 +71,12 @@
                 nextMonth(today)
                 createCalender()
             })
+            // 日付クリックで作成画面へ
+            document.addEventListener('click', function(e) {
+                if(e.target.classList.contains('calender-day') && e.target.innerHTML !== '') {
+                    window.open(`/edit/${e.target.dataset.date}`)
+                }
+            })
 
             // 前の月のデータ取得
             function prevMonth(day) {
@@ -107,13 +113,13 @@
                 for (let i = 0; i < rows; i++) {
                     calenderBody.insertAdjacentHTML('beforeend', `
                     <tr class="days">
-                        <td><a onclick="location.href='/edit/${cell[i][0]}'">${cell[i][1]}</a></td>
-                        <td><a href="/edit/${cell[i][2]}">${cell[i][3]}</a></td>
-                        <td><a href="/edit/${cell[i][4]}">${cell[i][5]}</a></td>
-                        <td><a href="/edit/${cell[i][6]}">${cell[i][7]}</a></td>
-                        <td><a href="/edit/${cell[i][8]}">${cell[i][9]}</a></td>
-                        <td><a href="/edit/${cell[i][10]}">${cell[i][11]}</a></td>
-                        <td><a href="/edit/${cell[i][12]}">${cell[i][13]}</a></td>
+                        <td class="calender-day" data-date="${cell[i][0]}">${cell[i][1]}</td>
+                        <td class="calender-day" data-date="${cell[i][2]}">${cell[i][3]}</td>
+                        <td class="calender-day" data-date="${cell[i][4]}">${cell[i][5]}</td>
+                        <td class="calender-day" data-date="${cell[i][6]}">${cell[i][7]}</td>
+                        <td class="calender-day" data-date="${cell[i][8]}">${cell[i][9]}</td>
+                        <td class="calender-day" data-date="${cell[i][10]}">${cell[i][11]}</td>
+                        <td class="calender-day" data-date="${cell[i][12]}">${cell[i][13]}</td>
                     <tr>
                     `)
                 }
