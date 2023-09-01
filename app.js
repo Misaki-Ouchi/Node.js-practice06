@@ -40,16 +40,15 @@ app.get("/create/:date", (req, res) => {
 });
 
 // スケジュール編集
-// app.get("/edit/:date", (req, res) => {
-//   const sql = `SELECT * FROM schedule WHERE date = ${req.params.date}`;
-//   const sql2 = `INSERT INTO schedule(id, date, title, username, content) VALUES (0, ${req.params.date}, ?, ?, ?)`;
-//   con.query(sql, function (err, result, fields) {
-//     if (err) throw err;
-//     res.render("edit", {
-//       schedule: result,
-//     });
-//   });
-// });
+app.get("/edit/:date", (req, res) => {
+  const sql = `SELECT * FROM schedule WHERE date = ${req.params.date}`;
+  con.query(sql, function (err, result, fields) {
+    if (err) throw err;
+    res.render("edit", {
+      schedule: result,
+    });
+  });
+});
 
 app.post("/", (req, res) => {
   console.log(req.params.id);

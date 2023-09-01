@@ -72,10 +72,19 @@
                 createCalender()
             })
             // 日付クリックで作成画面へ
-            document.addEventListener('click', function(e) {
-                if(e.target.classList.contains('calender-day') && e.target.innerHTML !== '') {
-                    // window.open(`/create/date:${e.target.dataset.date}`)
-                    window.open(`/create/${year}m0${month}d0${date}w${weekDay}`)
+            document.addEventListener('click', function (e) {
+                let h = 400
+                let w = 400
+                let wTop = window.screenTop + (window.innerHeight / 2) - (h / 4);
+                let wLeft = window.screenLeft + (window.innerWidth / 2) - (w / 2);
+                let week = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+
+                if (e.target.classList.contains('calender-day') && e.target.innerHTML !== '') {
+                    window.open(
+                        `/create/${year}m0${month}d0${date}w${weekDay}`,
+                        `${year}-${month}-${date}-${week[weekDay]}`,
+                        `width=${w}, height=${h}, top=${wTop}, left=${wLeft}`
+                    );
                 }
             })
 
