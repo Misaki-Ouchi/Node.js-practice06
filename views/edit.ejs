@@ -6,10 +6,11 @@
     <title>スケジュール</title>
 </head>
 <body>
+    <h1>スケジュールの編集</h1>
     <form class="inputForm" action="" method="post" novalidate>
-        タイトル：<input type="text" name="title"><br>
-        記入者：<input type="text" name="username"><br>
-        内容：<input type="text" name="content">
+        タイトル：<input type="text" name="title" value="<%= schedule[0].title %>"><br>
+        記入者：<input type="text" name="username" value="<%= schedule[0].username %>"><br>
+        内容：<input type="text" name="content" value="<%= schedule[0].content %>">
         <p><input type="submit" value="送信"></p>
     </form>
 

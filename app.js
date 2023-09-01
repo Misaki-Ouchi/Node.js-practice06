@@ -35,24 +35,15 @@ app.get("/", (req, res) => {
   });
 });
 
+// スケジュールの追加
 app.get("/create/:date", (req, res) => {
   res.sendFile(path.join(__dirname, "html/form.html"));
 });
 
-// スケジュール編集
-app.get("/edit/:date", (req, res) => {
-  const sql = `SELECT * FROM schedule WHERE date = ${req.params.date}`;
-  con.query(sql, function (err, result, fields) {
-    if (err) throw err;
-    res.render("edit", {
-      schedule: result,
-    });
-  });
-});
-
 app.post("/", (req, res) => {
   console.log(req.params.id);
-  const sql = `INSERT INTO schedule(date, title, username, content, id) VALUES (0, ?, ?, ?, 0)`
+  const sql = `INSERT INTO schedule (date, title, username, content, id) VALUES (?, ?, ?, ?, ?)
+    ON DUPLICATE KEY UPDATE title = VALUES(title), username = VALUES(username), content = VALUES(content)? `
   con.query(
     sql,
     [
@@ -64,10 +55,21 @@ app.post("/", (req, res) => {
     ],
     function (err, result, fields) {
       if (err) throw err;
-      res.redirect("/");
+      res.redirect("/index");
     }
   );
 });
+
+// スケジュール編集
+// app.get("/edit/:date", (req, res) => {
+//   const sql = `SELECT * FROM schedule WHERE date = ${req.params.date}`;
+//   con.query(sql, function (err, result, fields) {
+//     if (err) throw err;
+//     res.render("edit", {
+//       schedule: result,
+//     });
+//   });
+// });
 
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

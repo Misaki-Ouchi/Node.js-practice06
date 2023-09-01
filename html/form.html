@@ -8,8 +8,7 @@
     <body>
         <h1>スケジュールの追加</h1>
         <form action="/" method="post" novalidate>
-            <span id="dSpan"></span>
-            <input id="id" type="text" name="id" hidden><br>
+            <input id="id" type="text" name="id" hidden>
             <input id="date" type="text" name="date" hidden>
             タイトル：<input type="text" name="title"><br>
             記入者：<input type="text" name="username"><br>
@@ -18,18 +17,17 @@
         </form>
 
         <script>
-            let dSpan = document.querySelector('#dSpan')
             let date = document.querySelector('#date')
             let id = document.querySelector('#id')
             let dData = location.pathname.replace('/create/', '')
             id.value = dData
             date.value = dData
-            let year = dData.substr(0, 4)
-            let month = dData.substr(dData.indexOf('d') - 2, 2)
-            let day = dData.substr(dData.indexOf('w') - 2, 2)
-            let wDay = dData.substr(dData.indexOf('w') + 1, 1)
-            let week = ['日','月','火','水','木','金','土']
-            dSpan.innerHTML = year + '-' + month + '-' + day + '(' + week[wDay] + ')'
+            // let year = dData.substr(0, 4)
+            // let month = dData.substr(dData.indexOf('d') - 2, 2)
+            // let day = dData.substr(dData.indexOf('w') - 2, 2)
+            // let wDay = dData.substr(dData.indexOf('w') + 1, 1)
+            // let week = ['日','月','火','水','木','金','土']
+            // dSpan.innerHTML = year + '-' + month + '-' + day + '(' + week[wDay] + ')'
         </script>
     </body>
 </html>

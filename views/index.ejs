@@ -58,6 +58,7 @@
             // 今日の日付
             let today = new Date()
 
+            // 今月のカレンダー生成
             window.addEventListener('load', () => {
                 getDayData(today)
                 createCalender()
@@ -71,7 +72,7 @@
                 nextMonth(today)
                 createCalender()
             })
-            // 日付クリックで作成画面へ
+            // 日付クリックで作成画面ポップアップ
             document.addEventListener('click', function (e) {
                 let h = 400
                 let w = 400
@@ -81,8 +82,8 @@
 
                 if (e.target.classList.contains('calender-day') && e.target.innerHTML !== '') {
                     window.open(
-                        `/create/${year}m0${month}d0${date}w${weekDay}`,
-                        `${year}-${month}-${date}-${week[weekDay]}`,
+                        `/create/${e.target.dataset.date}`,
+                        '',
                         `width=${w}, height=${h}, top=${wTop}, left=${wLeft}`
                     );
                 }
@@ -98,6 +99,23 @@
                 day.setMonth(day.getMonth() + 1)
                 getDayData(day)
             }
+
+            // データベースのスケジュール格納
+            function inputData() {
+                let tdAll = document.querySelectorAll('.calender-day')
+                let tdArray = Array.prototype.slice.call(tdAll) //配列に変換
+                let tds = tdArray.filter( (elm)=> elm.innerHTML !== '') //日付の入ったtdだけ取得
+                tds.forEach( td => {
+                    schedule.forEach( value => {
+                        if (td.dataset.date === value.date) {
+                            td.innerHTML = `<a href="edit/:date">${value.title}</a>`
+                        }
+                    })
+                })
+            }
+            window.addEventListener('load', ()=> {
+                inputData()
+            })
 
             // 日付（引数）から必要データ取得
             function getDayData(val) {
