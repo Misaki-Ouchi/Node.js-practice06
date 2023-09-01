@@ -52,16 +52,23 @@ app.get("/create/:date", (req, res) => {
 // });
 
 app.post("/", (req, res) => {
-  const sql = `INSERT INTO schedule(date, title, username, content, id) VALUES (${req.body.date}, ?, ?, ?, 0)`;
+  console.log(req.params.id);
+  const sql = `INSERT INTO schedule(date, title, username, content, id) VALUES (0, ?, ?, ?, 0)`
   con.query(
     sql,
+    [
+      req.body.date,
+      req.body.title,
+      req.body.username,
+      req.body.content,
+      req.body.id
+    ],
     function (err, result, fields) {
       if (err) throw err;
       res.redirect("/");
     }
   );
 });
-
 
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
