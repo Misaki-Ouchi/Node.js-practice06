@@ -26,12 +26,6 @@
                 </tbody>
             </table>
         </div>
-        <form class="inputForm" action="/" method="post" novalidate>
-            タイトル：<input type="text" name="title"><br>
-            記入者：<input type="text" name="username"><br>
-            内容：<input type="text" name="content">
-            <p><input type="submit" value="送信"></p>
-        </form>
         <script>
             // データ取得
             const schedule = JSON.parse('<%= JSON.stringify(schedule) %>'.replace(/&#34;/g, '"'))
@@ -52,6 +46,7 @@
             let fstWeekDay = 6
             // 今月の最終日の曜日(後の空白の数 = 7 - lstWeekDay + 1)
             let lstWeekDay = 6
+            let aftCell = 2
             // 今月が何日か
             let days = 31
             // カレンダーの行数
@@ -63,7 +58,6 @@
             // 今日の日付
             let today = new Date()
 
-            
             window.addEventListener('load', () => {
                 getDayData(today)
                 createCalender()
@@ -78,14 +72,14 @@
                 createCalender()
             })
 
-            // 前の月
+            // 前の月のデータ取得
             function prevMonth(day) {
                 day.setMonth(day.getMonth() - 1)
                 getDayData(day)
             }
-            // 次の月
+            // 次の月のデータ取得
             function nextMonth(day) {
-                day.setMonth(day.getMonth())
+                day.setMonth(day.getMonth() + 1)
                 getDayData(day)
             }
 
@@ -95,22 +89,25 @@
                 month = val.getMonth() + 1
                 date = val.getDate()
                 weekDay = val.getDay()
-                days = new Date(year, month - 1, 0).getDate() // 今月の最終日の日にちを取得
+                days = new Date(year, month, 0).getDate() // 今月の最終日の日にちを取得
                 fstWeekDay = new Date(year, month - 1, 1).getDay()
                 lstWeekDay = new Date(year, month, 0).getDay()
-                aftCell = 7 - lstWeekDay + 1
-                rows = Math.ceil((fstWeekDay + days + 1) / 7)
+                aftCell = 7 - lstWeekDay - 1
+                rows = Math.ceil((fstWeekDay + days + aftCell - 1) / 7)
             }
 
             // カレンダー生成＆上部に年月表示
             function createCalender() {
+                // 中身用配列の生成
                 createCell()
+                // 初期化
                 calenderBody.innerHTML = ''
                 calenderTitle.innerHTML = ''
+
                 for (let i = 0; i < rows; i++) {
                     calenderBody.insertAdjacentHTML('beforeend', `
                     <tr class="days">
-                        <td><a href="/edit/${cell[i][0]}">${cell[i][1]}</a></td>
+                        <td><a onclick="location.href='/edit/${cell[i][0]}'">${cell[i][1]}</a></td>
                         <td><a href="/edit/${cell[i][2]}">${cell[i][3]}</a></td>
                         <td><a href="/edit/${cell[i][4]}">${cell[i][5]}</a></td>
                         <td><a href="/edit/${cell[i][6]}">${cell[i][7]}</a></td>
@@ -126,7 +123,7 @@
                 `)
             }
 
-            // カレンダーの枠の中身生成
+            // カレンダーの枠の中身用配列の生成
             function createCell() {
                 let a = []
                 // tdの中身を配列可
@@ -148,7 +145,6 @@
                     cell[i] = a.slice(i * 14, (i + 1) * 14)
                 }
             }
-
         </script>
     </body>
 </html>
