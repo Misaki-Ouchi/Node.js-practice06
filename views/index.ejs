@@ -74,7 +74,8 @@
             // 日付クリックで作成画面へ
             document.addEventListener('click', function(e) {
                 if(e.target.classList.contains('calender-day') && e.target.innerHTML !== '') {
-                    window.open(`/edit/${e.target.dataset.date}`)
+                    // window.open(`/create/date:${e.target.dataset.date}`)
+                    window.open(`/create/${year}m0${month}d0${date}w${weekDay}`)
                 }
             })
 

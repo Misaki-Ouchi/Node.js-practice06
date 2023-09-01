@@ -7,11 +7,14 @@
 </head>
 <body>
     <form class="inputForm" action="" method="post" novalidate>
-        日付：<input type="text" name="date"><%= schedule[0].date %><br>
         タイトル：<input type="text" name="title"><br>
         記入者：<input type="text" name="username"><br>
         内容：<input type="text" name="content">
         <p><input type="submit" value="送信"></p>
     </form>
+
+    <script>
+        console.log(location.pathname)
+    </script>
 </body>
 </html>
