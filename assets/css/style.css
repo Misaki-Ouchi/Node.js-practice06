@@ -13,3 +13,8 @@ td {
 .days td {
   background-color: #dda;
 }
+.schTitle {
+  cursor: pointer;
+  color: #0ab;
+  font-weight: bold;
+}

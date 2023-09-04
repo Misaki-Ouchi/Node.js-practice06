@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= schedule[0].date %></title>
+</head>
+<body>
+    <h1><%= schedule[0].title %></h1>
+        <span id="dSpan"><%= schedule[0].date %></span><br>
+        <p id="id"><span>タイトル：</span><%= schedule[0].title %></p>
+        <p id="date"><span>記入者：</span><%= schedule[0].username %></p>
+        <p><span>内容：</span><%= schedule[0].content %></p>
+        <a href="../edit/<%= schedule[0].id %>">編集</a>
+        <a href="delete/<%= schedule[0].id %>">削除</a>
+        <button onclick="window.close()">閉じる</button>
+
+    <script>
+        let dSpan = document.querySelector('#dSpan')
+        let value = dSpan.innerHTML
+        dSpan.innerHTML = value.replace('-', '年').replace('-', '月') + '日'
+        
+    </script>
+</body>
+</html>

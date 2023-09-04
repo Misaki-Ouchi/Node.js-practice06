@@ -54,21 +54,52 @@ app.post("/", (req, res) => {
     ],
     function (err, result, fields) {
       if (err) throw err;
-      res.redirect("/index");
+      res.redirect(`/show/${req.body.id}`);
     }
   );
 });
 
+// スケジュールの表示
+app.get("/show/:id", (req, res) => {
+  const sql = `SELECT * FROM schedule WHERE id = ${req.params.id}`;
+  con.query(sql, function (err, result, fields) {
+    if (err) throw err;
+    res.render("show", {
+      schedule: result,
+    });
+  });
+});
+
 // スケジュール編集
-// app.get("/edit/:date", (req, res) => {
-//   const sql = `SELECT * FROM schedule WHERE date = ${req.params.date}`;
-//   con.query(sql, function (err, result, fields) {
-//     if (err) throw err;
-//     res.render("edit", {
-//       schedule: result,
-//     });
-//   });
-// });
+app.get("/edit/:id", (req, res) => {
+  const sql = `SELECT * FROM schedule WHERE id = ${req.params.id}`;
+  con.query(sql, function (err, result, fields) {
+    if (err) throw err;
+    res.render("edit", {
+      schedule: result,
+    });
+  });
+});
+
+app.post("/update/:id", (req, res) => {
+  console.log(req.params.id);
+  const sql = "UPDATE schedule SET ? WHERE id = " + req.params.id;
+  con.query(sql, req.body, function (err, result, fields) {
+    if (err) throw err;
+    console.log(result);
+    res.redirect(`/show/${req.params.id}`);
+  });
+});
+
+// スケジュール削除
+app.get("/show/delete/:id", (req, res) => {
+  const sql = "DELETE FROM schedule WHERE id = ?";
+  con.query(sql, [req.params.id], function (err, result, fields) {
+    if (err) throw err;
+    console.log(result);
+    res.redirect(`/show/edit/${req.params.id}`);
+  });
+});
 
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

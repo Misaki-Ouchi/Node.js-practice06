@@ -13,15 +13,6 @@
             <button id="prevBtn">&lt;</button>
             <button id="nextBtn">&gt;</button>
             <table>
-                <tr>
-                    <td>日</td>
-                    <td>月</td>
-                    <td>火</td>
-                    <td>水</td>
-                    <td>木</td>
-                    <td>金</td>
-                    <td>土</td>
-                </tr>
                 <tbody id="calenderBody">
                 </tbody>
             </table>
@@ -54,10 +45,10 @@
             // カレンダーの枠
             // （7 * 2 * rowsの多次元配列 偶数個目にdate情報）
             let cell = []
-
             // 今日の日付
             let today = new Date()
 
+            // イベント
             // 今月のカレンダー生成
             window.addEventListener('load', () => {
                 getDayData(today)
@@ -67,25 +58,33 @@
             prevBtn.addEventListener('click', () => {
                 prevMonth(today)
                 createCalender()
+                inputData()
             })
             nextBtn.addEventListener('click', () => {
                 nextMonth(today)
                 createCalender()
+                inputData()
             })
             // 日付クリックで作成画面ポップアップ
+            let tdAll = document.querySelectorAll('.calender-day')
             document.addEventListener('click', function (e) {
                 let h = 400
                 let w = 400
                 let wTop = window.screenTop + (window.innerHeight / 2) - (h / 4);
                 let wLeft = window.screenLeft + (window.innerWidth / 2) - (w / 2);
-                let week = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
-
-                if (e.target.classList.contains('calender-day') && e.target.innerHTML !== '') {
+                let url = new Date(e.target.dataset.date).toLocaleDateString() //2023/9/7のような値
+                url = url.replace('/', '-').replace('/', '-')
+                let id = e.target.dataset.id
+                // 表示画面へ
+                if (e.target.classList.contains('schTitle')){
                     window.open(
-                        // `/create/${e.target.dataset.date}`,
-                        `/create/${year}m0${month}d0${date}w${weekDay}`,
-                        '',
-                        `width=${w}, height=${h}, top=${wTop}, left=${wLeft}`
+                        `/show/${id}`, '', `width=${w}, height=${h}, top=${wTop}, left=${wLeft}`
+                    );
+                }
+                // 入力画面へ
+                else if (e.target.classList.contains('calender-day') && e.target.classList.contains('haveSch') == false) {
+                    window.open(
+                        `/create/${url}`, '', `width=${w}, height=${h}, top=${wTop}, left=${wLeft}`
                     );
                 }
             })
@@ -100,21 +99,24 @@
                 day.setMonth(day.getMonth() + 1)
                 getDayData(day)
             }
-
             // データベースのスケジュール格納
             function inputData() {
                 let tdAll = document.querySelectorAll('.calender-day')
                 let tdArray = Array.prototype.slice.call(tdAll) //配列に変換
-                let tds = tdArray.filter( (elm)=> elm.innerHTML !== '') //日付の入ったtdだけ取得
-                tds.forEach( td => {
-                    schedule.forEach( value => {
-                        if (td.dataset.date === value.date) {
-                            td.innerHTML = `<a href="edit/:date">${value.title}</a>`
+                let tds = tdArray.filter((elm) => elm.innerHTML !== '') //日付の入ったtdだけ取得
+
+                tds.forEach(td => {
+                    let tdDate = new Date(td.dataset.date).toLocaleDateString() //2023/9/7のような値
+                    tdDate = tdDate.replace('/', '-').replace('/', '-')
+                    schedule.forEach(value => {
+                        if (tdDate === value.date) {
+                            td.classList.add('haveSch')
+                            td.innerHTML += `<span class="schTitle" data-id="${value.id}">${value.title}</span>`
                         }
                     })
                 })
             }
-            window.addEventListener('load', ()=> {
+            window.addEventListener('load', () => {
                 inputData()
             })
 
@@ -131,15 +133,35 @@
                 rows = Math.ceil((fstWeekDay + days + aftCell - 1) / 7)
             }
 
-            // カレンダー生成＆上部に年月表示
+            // カレンダー生成
             function createCalender() {
                 // 中身用配列の生成
                 createCell()
                 // 初期化
                 calenderBody.innerHTML = ''
                 calenderTitle.innerHTML = ''
-
+                // カレンダー上部の日付
+                calenderBody.insertAdjacentHTML('beforeend', `
+                <tr>
+                    <td>日</td>
+                    <td>月</td>
+                    <td>火</td>
+                    <td>水</td>
+                    <td>木</td>
+                    <td>金</td>
+                    <td>土</td>
+                </tr>
+                `)
+                // カレンダーの中身
                 for (let i = 0; i < rows; i++) {
+                    // リファクタリング途中(insertのtdの行を一つにする)
+                    // let tr = document.createElement(tr)
+                    // tr.classList.ad('days')
+                    // for (let i = 0; i < 7; i++) {
+                    //     tr.appendChild('td')
+                    //     tr.classList.add('calender-day')
+
+                    // }
                     calenderBody.insertAdjacentHTML('beforeend', `
                     <tr class="days">
                         <td class="calender-day" data-date="${cell[i][0]}">${cell[i][1]}</td>
@@ -151,13 +173,13 @@
                         <td class="calender-day" data-date="${cell[i][12]}">${cell[i][13]}</td>
                     <tr>
                     `)
+
                 }
                 // 上部に年月表示
                 calenderTitle.insertAdjacentHTML('beforeend', `
                     <tr>${year}年${month}月</tr>
                 `)
             }
-
             // カレンダーの枠の中身用配列の生成
             function createCell() {
                 let a = []
