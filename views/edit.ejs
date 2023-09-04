@@ -20,6 +20,14 @@
         let sDate = document.querySelector('#sDate')
         let value = sDate.innerHTML
         sDate.innerHTML = value.replace('-', '年').replace('-', '月') + '日'
+
+        let btn = document.querySelector('.btn')
+        btn.addEventListener('click', () => {
+                setTimeout(() => {
+                    window.close()
+                    window.opener.location.reload()
+                }, 100);
+            })
     </script>
 </body>
 </html>

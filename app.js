@@ -87,7 +87,7 @@ app.post("/update/:id", (req, res) => {
   con.query(sql, req.body, function (err, result, fields) {
     if (err) throw err;
     console.log(result);
-    res.redirect(`/show/${req.params.id}`);
+    // res.redirect(`/show/${req.params.id}`);
   });
 });
 
