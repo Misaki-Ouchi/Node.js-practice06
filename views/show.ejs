@@ -14,15 +14,29 @@
             <p><span>内容：</span><%= schedule[0].content %></p>
             <p class="links">
                 <a href="../edit/<%= schedule[0].id %>">編集</a>
-                <a href="../delete/<%= schedule[0].id %>">削除</a>
+                <a class="delBtn" href="../delete/<%= schedule[0].id %>">削除</a>
             </p>
         </div>
-        <button onclick="window.close()">閉じる</button>
+        <button class="btn">閉じる</button>
         <script>
             let sDate = document.querySelector('#sDate')
             let value = sDate.innerHTML
             sDate.innerHTML = value.replace('-', '年').replace('-', '月') + '日'
 
+            let delBtn = document.querySelector('.delBtn')
+            let btn = document.querySelector('.btn')
+            delBtn.addEventListener('click', () => {
+                setTimeout(() => {
+                    window.close()
+                    window.opener.location.reload()
+                }, 100);
+            })
+            btn.addEventListener('click', () => {
+                setTimeout(() => {
+                    window.close()
+                    window.opener.location.reload()
+                }, 100);
+            })
         </script>
     </body>
 </html>

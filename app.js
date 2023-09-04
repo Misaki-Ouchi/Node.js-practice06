@@ -54,7 +54,7 @@ app.post("/", (req, res) => {
     ],
     function (err, result, fields) {
       if (err) throw err;
-      res.send("スケジュールを追加しました");
+      // res.send("スケジュールを追加しました");
     }
   );
 });
@@ -97,7 +97,7 @@ app.get("/delete/:id", (req, res) => {
   con.query(sql, [req.params.id], function (err, result, fields) {
     if (err) throw err;
     console.log(result);
-    res.send("スケジュールを削除しました");
+    // res.send("スケジュールを削除しました");
   });
 });
 

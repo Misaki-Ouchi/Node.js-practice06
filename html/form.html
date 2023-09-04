@@ -12,17 +12,29 @@
             <p id="sDate"></p>
             <input id="date" type="text" name="date" hidden>
             <label for="title">タイトル：</label><input id="title" type="text" name="title" required><br>
-            <labal for="username">記入者：</labal><input id="username" type="text" name="username"><br>
+            <label for="username">記入者：</label><input id="username" type="text" name="username"><br>
             <label>内容：</label><br><textarea cols="35" rows="5" name="content"></textarea><br>
             <input class="btn" type="submit" value="送信">
         </form>
 
         <script>
             let sDate = document.querySelector('#sDate')
+            let title = document.querySelector('#title')
             let date = document.querySelector('#date')
             let dData = location.pathname.replace('/create/', '')
             date.value = dData
             sDate.innerHTML = dData.replace('-', '年').replace('-', '月') + '日'
+
+
+            let btn = document.querySelector('.btn')
+            btn.addEventListener('click', () => {
+                if (title.value !== '') {
+                    setTimeout(() => {
+                        window.close()
+                        window.opener.location.reload()
+                    }, 100);
+                }
+            })
         </script>
     </body>
 </html>

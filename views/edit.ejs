@@ -13,14 +13,13 @@
         <label for="id">タイトル：</label><input id="id" type="text" name="title" value="<%= schedule[0].title %>"><br>
         <label for="date">記入者：</label><input id="date" type="text" name="username" value="<%= schedule[0].username %>"><br>
         <label for="content">内容：</label><input id="content" type="text" name="content" value="<%= schedule[0].content %>">
-        <p><input type="submit" value="送信"></p>
+        <p><input class="btn" type="submit" value="送信"></p>
     </form>
 
     <script>
         let sDate = document.querySelector('#sDate')
         let value = sDate.innerHTML
         sDate.innerHTML = value.replace('-', '年').replace('-', '月') + '日'
-        
     </script>
 </body>
 </html>
