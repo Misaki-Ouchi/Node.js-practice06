@@ -4,25 +4,25 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>スケジュールの追加</title>
+        <link rel="stylesheet" href="/css/style.css">
     </head>
-    <body>
+    <body id="form">
         <h1>スケジュールの追加</h1>
-        <form action="/" method="post" novalidate>
-            <span id="dSpan"></span><br>
+        <form action="/" method="post">
+            <p id="sDate"></p>
             <input id="date" type="text" name="date" hidden>
-            タイトル：<input type="text" name="title"><br>
-            記入者：<input type="text" name="username"><br>
-            内容：<input type="text" name="content">
-            <p><input type="submit" value="送信"></p>
+            <label for="title">タイトル：</label><input id="title" type="text" name="title" required><br>
+            <labal for="username">記入者：</labal><input id="username" type="text" name="username"><br>
+            <label>内容：</label><br><textarea cols="35" rows="5" name="content"></textarea><br>
+            <input class="btn" type="submit" value="送信">
         </form>
 
         <script>
-            let dSpan = document.querySelector('#dSpan')
+            let sDate = document.querySelector('#sDate')
             let date = document.querySelector('#date')
-            let id = document.querySelector('#id')
             let dData = location.pathname.replace('/create/', '')
             date.value = dData
-            dSpan.innerHTML = dData.replace('-', '年').replace('-', '月') + '日'
+            sDate.innerHTML = dData.replace('-', '年').replace('-', '月') + '日'
         </script>
     </body>
 </html>

@@ -4,21 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>スケジュール</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
+<body id="edit">
     <h1>スケジュールの編集</h1>
     <form class="inputForm" action="/update/<%= schedule[0].id %>" method="post" novalidate>
-        <span id="dSpan"><%= schedule[0].date %></span><br>
-        タイトル：<input id="id" type="text" name="title" value="<%= schedule[0].title %>"><br>
-        記入者：<input id="date" type="text" name="username" value="<%= schedule[0].username %>"><br>
-        内容：<input type="text" name="content" value="<%= schedule[0].content %>">
+        <p id="sDate"><%= schedule[0].date %></p><br>
+        <label for="id">タイトル：</label><input id="id" type="text" name="title" value="<%= schedule[0].title %>"><br>
+        <label for="date">記入者：</label><input id="date" type="text" name="username" value="<%= schedule[0].username %>"><br>
+        <label for="content">内容：</label><input id="content" type="text" name="content" value="<%= schedule[0].content %>">
         <p><input type="submit" value="送信"></p>
     </form>
 
     <script>
-        let dSpan = document.querySelector('#dSpan')
-        let value = dSpan.innerHTML
-        dSpan.innerHTML = value.replace('-', '年').replace('-', '月') + '日'
+        let sDate = document.querySelector('#sDate')
+        let value = sDate.innerHTML
+        sDate.innerHTML = value.replace('-', '年').replace('-', '月') + '日'
         
     </script>
 </body>

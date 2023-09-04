@@ -6,12 +6,15 @@
         <title>カレンダースケジュール</title>
         <link rel="stylesheet" href="/css/style.css">
     </head>
-    <body>
+    <body id="index">
         <h1>カレンダースケジュール</h1>
+        <small>（リロードで追加したスケジュール表示）</small>
         <div id="calender">
             <h2 id="calenderTitle"></h2>
-            <button id="prevBtn">&lt;</button>
-            <button id="nextBtn">&gt;</button>
+            <div class="buttons">
+                <button id="prevBtn">&lt;</button>
+                <button id="nextBtn">&gt;</button>
+            </div>
             <table>
                 <tbody id="calenderBody">
                 </tbody>
@@ -53,6 +56,7 @@
             window.addEventListener('load', () => {
                 getDayData(today)
                 createCalender()
+                inputData()
             })
             // ボタンクリックで月変更
             prevBtn.addEventListener('click', () => {
@@ -66,23 +70,27 @@
                 inputData()
             })
             // 日付クリックで作成画面ポップアップ
-            let tdAll = document.querySelectorAll('.calender-day')
             document.addEventListener('click', function (e) {
                 let h = 400
                 let w = 400
-                let wTop = window.screenTop + (window.innerHeight / 2) - (h / 4);
-                let wLeft = window.screenLeft + (window.innerWidth / 2) - (w / 2);
-                let url = new Date(e.target.dataset.date).toLocaleDateString() //2023/9/7のような値
+                let wTop = window.screenTop + (window.innerHeight / 2) - (h / 4)
+                let wLeft = window.screenLeft + (window.innerWidth / 2) - (w / 2)
+                let dt = e.target.dataset.date
+                let url = new Date(dt).toLocaleDateString() //2023/9/7のような値
                 url = url.replace('/', '-').replace('/', '-')
                 let id = e.target.dataset.id
                 // 表示画面へ
-                if (e.target.classList.contains('schTitle')){
+                if (e.target.classList.contains('schTitle')) {
                     window.open(
                         `/show/${id}`, '', `width=${w}, height=${h}, top=${wTop}, left=${wLeft}`
                     );
                 }
                 // 入力画面へ
-                else if (e.target.classList.contains('calender-day') && e.target.classList.contains('haveSch') == false) {
+                else if (
+                    e.target.classList.contains('calender-day') // 曜日を除外
+                    && e.target.classList.contains('haveSch') == false // スケジュール登録済みを除外
+                    && dt !== '' // 日付表示のないものを除外
+                ) {
                     window.open(
                         `/create/${url}`, '', `width=${w}, height=${h}, top=${wTop}, left=${wLeft}`
                     );
@@ -106,8 +114,8 @@
                 let tds = tdArray.filter((elm) => elm.innerHTML !== '') //日付の入ったtdだけ取得
 
                 tds.forEach(td => {
-                    let tdDate = new Date(td.dataset.date).toLocaleDateString() //2023/9/7のような値
-                    tdDate = tdDate.replace('/', '-').replace('/', '-')
+                    let tdDate = new Date(td.dataset.date).toLocaleDateString() //2023/9/7のような値に変換
+                    tdDate = tdDate.replace('/', '-').replace('/', '-') //2023-9-7のような値に変換
                     schedule.forEach(value => {
                         if (tdDate === value.date) {
                             td.classList.add('haveSch')
@@ -116,9 +124,6 @@
                     })
                 })
             }
-            window.addEventListener('load', () => {
-                inputData()
-            })
 
             // 日付（引数）から必要データ取得
             function getDayData(val) {
@@ -164,21 +169,19 @@
                     // }
                     calenderBody.insertAdjacentHTML('beforeend', `
                     <tr class="days">
-                        <td class="calender-day" data-date="${cell[i][0]}">${cell[i][1]}</td>
-                        <td class="calender-day" data-date="${cell[i][2]}">${cell[i][3]}</td>
-                        <td class="calender-day" data-date="${cell[i][4]}">${cell[i][5]}</td>
-                        <td class="calender-day" data-date="${cell[i][6]}">${cell[i][7]}</td>
-                        <td class="calender-day" data-date="${cell[i][8]}">${cell[i][9]}</td>
-                        <td class="calender-day" data-date="${cell[i][10]}">${cell[i][11]}</td>
-                        <td class="calender-day" data-date="${cell[i][12]}">${cell[i][13]}</td>
+                        <td class="calender-day" data-date="${cell[i][0]}"><p>${cell[i][1]}</p></td>
+                        <td class="calender-day" data-date="${cell[i][2]}"><p>${cell[i][3]}</p></td>
+                        <td class="calender-day" data-date="${cell[i][4]}"><p>${cell[i][5]}</p></td>
+                        <td class="calender-day" data-date="${cell[i][6]}"><p>${cell[i][7]}</p></td>
+                        <td class="calender-day" data-date="${cell[i][8]}"><p>${cell[i][9]}</p></td>
+                        <td class="calender-day" data-date="${cell[i][10]}"><p>${cell[i][11]}</p></td>
+                        <td class="calender-day" data-date="${cell[i][12]}"><p>${cell[i][13]}</p></td>
                     <tr>
                     `)
 
                 }
                 // 上部に年月表示
-                calenderTitle.insertAdjacentHTML('beforeend', `
-                    <tr>${year}年${month}月</tr>
-                `)
+                calenderTitle.innerHTML += `${year}年${month}月`
             }
             // カレンダーの枠の中身用配列の生成
             function createCell() {

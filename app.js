@@ -42,19 +42,19 @@ app.get("/create/:date", (req, res) => {
 
 app.post("/", (req, res) => {
   console.log(req.params.id);
-  const sql = "INSERT INTO schedule (date, title, username, content, id) VALUES (?, ?, ?, ?, ?)"
+  const sql = "INSERT INTO schedule (id, date, title, username, content) VALUES (?, ?, ?, ?, ?)"
   con.query(
     sql,
     [
+      req.body.id,
       req.body.date,
       req.body.title,
       req.body.username,
-      req.body.content,
-      req.body.id
+      req.body.content
     ],
     function (err, result, fields) {
       if (err) throw err;
-      res.redirect(`/show/${req.body.id}`);
+      res.send("スケジュールを追加しました");
     }
   );
 });
@@ -92,12 +92,12 @@ app.post("/update/:id", (req, res) => {
 });
 
 // スケジュール削除
-app.get("/show/delete/:id", (req, res) => {
+app.get("/delete/:id", (req, res) => {
   const sql = "DELETE FROM schedule WHERE id = ?";
   con.query(sql, [req.params.id], function (err, result, fields) {
     if (err) throw err;
     console.log(result);
-    res.redirect(`/show/edit/${req.params.id}`);
+    res.send("スケジュールを削除しました");
   });
 });
 
